@@ -1,0 +1,641 @@
+@import "compass/css3";
+@import url(https://fonts.googleapis.com/css?family=Boogaloo);
+@import url(https://fonts.googleapis.com/css?family=Keania+One);
+*, *:after, *:before{
+  @include box-sizing(border-box);
+}
+//colors vars
+$red: #ff0000;
+$green: #00ff00;
+$yellow: #ffff00;
+$blue: #0000ff;
+$black: #090909;
+$silver: #a7a7a7;
+$dark-grey: #292929;
+//size vars
+$simWidth: 500px;
+$simHeight: 500px;
+$simPad: 1.4%;
+$buttonWidth: 50% - ($simPad * 2);
+
+body {
+  background-color: $dark-grey;
+}
+
+%game-button {
+  width: $buttonWidth;
+  height: $buttonWidth;
+  margin: $simPad;
+  border-radius: 100% 5px 5px 5px;
+  opacity: 0.65;
+  float: left;
+}
+
+%font {
+  font-family: 'Boogaloo', cursive;
+}
+
+%interface-button {
+  width: 30px;
+  height: 30px;
+  border: 3px solid $black;
+  border-radius: 50%;
+}
+
+/*@media screen and (max-width: 1024px) { 
+  
+}*/
+
+/*Simon Game*/
+.simon-body {
+  background-color: $black;
+  position: relative;
+  margin-top: 80px;
+  padding: $simPad;
+  width: $simWidth;
+  height: $simHeight;
+  border-radius: 50%;
+
+  .green-button {
+    @extend %game-button;
+    background-color: $green;
+  }
+
+  .red-button {
+    @extend %game-button;
+    @include transform2d(rotate(90deg));
+    background-color: $red;
+  }
+
+  .yellow-button {
+    @extend %game-button;
+    @include transform2d(rotate(270deg));
+    background-color: $yellow;
+  }
+
+  .blue-button {
+    @extend %game-button;
+    @include transform2d(rotate(180deg));
+    background-color: $blue;
+  }
+  
+  .game-interface {
+    background-color: $silver;
+    position: absolute;
+    width: $simWidth * .5;
+    height: $simHeight * .5;
+    border-radius: 50%;
+    border: 12px solid $black;
+    z-index: 4;
+    left: 25%;
+    top: 25%;
+    
+    h1 {
+      @extend %font;
+      text-align: center;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    
+    .score-display {
+      background-color: $silver * .2;
+      width: 40%;
+      height: 40px;
+      border: 4px solid $black;
+      padding: 0 5px;
+      border-radius: 5px;
+      text-align: center;
+      line-height: 30px;
+      
+      span {
+        color: $red * 1.6;
+        font-family: 'Keania One', cursive;
+        font-size: 1.9em;
+        letter-spacing: 2px;
+      }
+    }
+    
+    .diff-option {
+      display: block;
+      
+      &::before {
+        content: "\2212\a0";
+        font-weight: bold;
+      }
+        
+      &.active:before {
+        color: $red;
+      }
+    }
+    
+    .diff-button {
+      @extend %interface-button;
+      margin-top: 15px;
+      background-color: $yellow;
+    }
+    
+    .start-button {
+      @extend %interface-button;
+      background-color: $green;
+      
+      &::after {
+        @extend %font;
+        position: absolute;
+        top: 30px;
+        content: "Start";
+        font-size: 1.2em;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.instr-frame {
+  margin-top: 40px;
+  max-width: 450px;
+  
+  .instr-body {
+    background-color: $silver * 2.5;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  
+  .txt-hidden {
+    display: none;
+  }
+}
+
+.wrapper {
+  margin: 0 auto;
+  margin-top: 50px;
+  text-align: center;
+  color: $silver;
+}<!--Simon Game-->
+<div class="container">
+  <div class="simon-body center-block clear-fix">
+    <!--top left button-->
+    <div class="green-button"></div>
+
+    <!--top right button-->
+    <div class="red-button"></div>
+
+    <!--center circle interface-->
+    <div class="game-interface">
+      <h1>Simon<sup>&#174;</sup></h1>
+      <!-- buttons && controls-->
+      <div class="row">
+        
+        <!-- display -->
+        <div class="col-xs-12">
+          <div class="score-display center-block">
+            <span id="score">--</span>
+          </div>
+        </div>
+        
+        <!-- difficulty level button -->
+        <div class="col-xs-6">
+          <div class="diff-button pull-right"></div>
+        </div>
+        
+        <!-- difficulty options -->
+        <div class="col-xs-6">
+          <div class="pull-left">
+            <span id="easy-option" class="diff-option">Easy</span>
+            <span id="hard-option" class="diff-option">Hard</span>
+            <span id="krazy-option" class="diff-option">Krazy</span>
+          </div>
+        </div>
+        
+        <!-- start button -->
+        <div class="col-xs-12">
+          <div class="start-button center-block"></div>
+        </div>
+      </div>
+    </div>
+
+    <!--bottom left button-->
+    <div class="yellow-button"></div>
+
+    <!--bottom right button-->
+    <div class="blue-button"></div>
+  </div>
+</div>
+
+<!-- Game instructions-->
+<div class="container">
+  <div class="instr-frame center-block">
+    <div class="instr-body">
+      <h2>Instructions</h2>
+      <b>Gameplay</b>
+      <p>
+        This is a simple, fun game meant to replicate the orignal Simon game. Press start and wait for the sequence of buttons to light up. Select the correct buttons in the order given to move to the next step. Complete all sequences to win.
+      </p>
+      
+      <b>Easy</b>
+      <p>
+        Complete 20 sequences to win. As you progress, the length of the sequence increases by 1.
+      </p>
+      
+      <b>Hard</b>
+      <p>
+        Complete 25 sequences to win. As you progress, the length of the sequence increases by 1. Reaction time is reduced.
+      </p>
+      
+      <b>Krazy</b>
+      <p>
+        Complete 40 sequences to win. As you progress, the length of the sequence increases by 2. Reaction time is further reduced.
+      </p>
+    </div>
+    
+    <div id="instr-button" class="btn btn-default btn-block" role="button">
+      <span class="btn-txt">See Instructions</span>
+      <span class="btn-txt txt-hidden">Hide Instructions</span>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container wrapper">
+    <p>FreeCodeCamp Simon-Game | copyright &#169;
+      <a href="https://twitter.com/levyianboss">@levyianboss</a>
+    </p>
+  </div>
+</footer>$(document).ready(function() {
+  //ui controls
+  var greenB = $('.green-button'),
+      redB = $('.red-button'),
+      yellowB = $('.yellow-button'),
+      blueB = $('.blue-button'),
+      score = $('#score'),
+      diffOptions = [
+        $('#easy-option'),
+        $('#hard-option'),
+        $('#krazy-option')
+      ];
+  //system vars
+  var Game = {},
+      ready = false,
+      inputWaitTimer,
+      playSequenceTimer;
+  
+  /**********************system functions******************/
+  //function to update the current sequence count for the user
+  //params (int, int)
+  //returns int - the new number of sequence
+  function updateSequenceCounter(curSeq, usrDiff) {
+    //increment => easy/hard 1, krazy 2
+    if (usrDiff == 2)
+      return curSeq + 2;
+    else
+      return curSeq + 1;
+  }
+  
+  //function to update the buttons for the current sequence
+  //pararms (int, array[int])
+  //returns array[int] containing the full button sequence
+  function updateButtonSequence(seqLen, sPattern, usrDiff) {
+    if (seqLen < sPattern.length)
+      return Null;//this should not be
+    
+    var delta = seqLen - sPattern.length;
+    //sequence values goes from 0 - 3
+    for (var i = 0; i < delta; i++){
+      var val = Math.round(Math.random() * (3));
+      //on easy don't allow repitition
+      if (usrDiff === 0 &&
+          sPattern.length > 0 &&
+         val === sPattern[sPattern.length - 1]){
+        //if val === last index add 1
+        val = (val + 1) % 4;
+      }
+      
+      sPattern.push(val);
+    }
+    return sPattern;
+  }
+  
+  //function to play/animate the current buttons in the sequence
+  //the buttons are played one after the other with the given time interval.
+  //When the sequence completes, the timer callback will be called gieven the wait time param as args
+  //params (array[int], int, array[string url], function)
+  //returns a timer object
+  function sequencePlayer(sPattern, sSpeed, sSounds, callback) {
+    var count = 0,
+        seqLen = sPattern.length,
+        buttonArray = [
+          greenB,
+          redB,
+          yellowB,
+          blueB
+        ],
+        timer = $.timer(function() {
+          var currentSequenceIndex = sPattern[count];
+          //press the button one by one
+          animateButtonPress(buttonArray[currentSequenceIndex], sSounds[currentSequenceIndex]);
+          count++;
+          
+          //at the end of the sPattern array stop the timer
+          //activate callback and pass in wait time var
+          if (count >= seqLen){            
+            console.log("stoping playback timer. sequence length: " + seqLen);
+            timer.stop();
+            if (typeof callback === "function")
+              callback();
+          }
+        });
+    //start the timer inteval and start it
+    timer.set({ time : sSpeed, autostart : true });
+    return timer;
+  }
+  
+  //function to check whether the current user sequence is complete or on the right path
+  //params (array[int], array[int])
+  //returns 0 - match and complete,
+  //        1 - match but not complete,
+  //       -1 - did not match
+  function sequenceChecker(sPattern, uPattern) {
+    if (sPattern.length < uPattern.length)
+      return -1;
+    
+    var count = 0,
+        usrPLen = uPattern.length,
+        //if the lengths are equal then 0 or -1, otherwise 1 or -1
+        result = sPattern.length === uPattern.length? 0 : 1;
+    
+    while (count < usrPLen && result !== -1) {
+      if (uPattern[count] !== sPattern[count])
+        result = -1;
+      count++;
+    }
+    return result;
+  }
+  
+  //functions to play a sound given by url (string)
+  //params (string)
+  //returns true is sounds was successfully played
+  //        false otherwise
+  function playSounds(soundFile) {
+    if (typeof soundFile === "string")
+      return $.playSound(soundFile);
+    else
+      return false;
+  }
+  
+  //function to animate button press
+  //params (Jquery Dom object (button), string (url of sound file))
+  //return true - sound played successfully, false otherwise
+  function animateButtonPress(button, sound) {
+    var soundRes = playSounds(sound);
+    button.animate({opacity: 1}, 100).delay(200).animate({opacity: .65}, 100)
+    return soundRes;
+  }
+  
+  //function to randomize the given array
+  //params (array)
+  //return (array - containg same values in different indices)
+  function radomizeArray(arr) {
+    var len = Math.round(Math.random() * (arr.length - 1));
+    for (var i = 0; i < len; i++){
+      arr.unshift(arr.pop());
+    }
+    return arr;
+  }
+  
+  //method to create wait timer.
+  //the wait timer will "wait" for the user to press a game
+  //button for a set time. If the user does not respond by then
+  //the curresnt game sequence will be considered a fail.
+  function createWaitTimer() {
+    var count = 0;
+    inputWaitTimer = $.timer(function() {
+      if (count >= 1){
+        console.log("wait timer ended, processing error");
+        processError();
+        inputWaitTimer.stop();
+      }
+      count++
+    }, Game.waitTime, true);
+    ready = true;
+  }
+  
+  //function to initialize the game vars at the start of the game
+  //params (int - difficulty level)
+  function initializeGameVars(diff) {
+    var obj = {
+      //the diffuculty setting
+      uDiff: diff,
+      //green, red, yellow, blue button sounds
+      sounds: [
+        "https://s3.amazonaws.com/freecodecamp/simonSound1",  
+        "https://s3.amazonaws.com/freecodecamp/simonSound2",
+        "https://s3.amazonaws.com/freecodecamp/simonSound3",
+        "https://s3.amazonaws.com/freecodecamp/simonSound4"
+      ],
+      winLoseSounds: [
+        "https://dl.dropboxusercontent.com/u/98508428/FCC/Audio/error",
+        "https://dl.dropboxusercontent.com/u/98508428/FCC/Audio/cheer"        
+      ],
+      //the system's sequence patern
+      sysPattern: [],
+      //the users sequence pattern
+      usrPattern: []
+    }
+     
+    //vars dependent on difficulty setting
+    //(inital sequnce length) easy - 1, hard - 2, krazy - 4
+    //(sequence speed) easy/hard 800 (.8s), krazy 400 (.4s)
+    //(user input wait time) easy 2000 (2s), hard 1000 (1s), krazy 800 (.8s)
+    //(wiining count) easy - 20, hard - 25, krazy - 40
+    switch (diff){//difficulty settings
+      case 1://hard
+        obj.sequenceLength = 2;
+        obj.sequenceSpeed = 800;
+        obj.waitTime = 1000;
+        obj.winningCount = 25;
+        break;
+      case 2://krazy
+        obj.sequenceLength = 4;
+        obj.sequenceSpeed = 400;
+        obj.waitTime = 800;
+        obj.winningCount = 40;
+        break;
+      default://easy
+        obj.sequenceLength = 1;
+        obj.sequenceSpeed = 800;
+        obj.waitTime = 2000;
+        obj.winningCount = 20;
+        break;
+    }
+    return obj;
+  }
+  
+  /**********************GUI functions********************/
+  //click event for the green button
+  greenB.click(function() {
+    if (!ready) return;
+    //button id 0
+    animateButtonPress($(this), Game.sounds[0]);
+    Game.usrPattern.push(0);
+    testUserInput();
+  });
+  
+  //click event for the red button
+  redB.click(function() {
+    if (!ready) return;
+    //button id 1
+    animateButtonPress($(this), Game.sounds[1]);
+    Game.usrPattern.push(1);
+    testUserInput();
+  });
+  
+  //click event for the yellow button
+  yellowB.click(function() {
+    if (!ready) return;
+    //button id 2
+    animateButtonPress($(this), Game.sounds[2]);
+    Game.usrPattern.push(2);
+    testUserInput();
+  });
+  
+  //click event for the blue button
+  blueB.click(function() {
+    if (!ready) return;
+    //button id 3
+    animateButtonPress($(this), Game.sounds[3]);
+    Game.usrPattern.push(3);
+    testUserInput();
+  });
+  
+  //click event for the difficulty level button
+  $('.diff-button').click(function() {
+    //if the current difficulty level is not a number then 
+    //set it to zero
+    if (typeof Game.uDiff !== "number"){
+      Game.uDiff = 0;
+    } else {
+      Game.uDiff = (Game.uDiff + 1) % 3
+    }
+    
+    //update the ui
+    diffOptions.map(function(val) {
+      val.removeClass("active");
+    });
+    diffOptions[Game.uDiff].addClass("active");
+    //set game to off mode if unset
+    score.text("--");
+    if (ready !== false ||
+        (typeof Game.sysPattern === "object" &&
+       Game.sysPattern.length > 0)){
+      ready = false;
+      Game.sysPattern = [];
+      if (playSequenceTimer.isActive)
+        playSequenceTimer.stop();
+      if (inputWaitTimer.isActive)
+        inputWaitTimer.stop();
+    }
+  });
+  
+  //click event for instructions button. show/hide
+  $('#instr-button').click(function() {
+    $('.instr-body').slideToggle(function() {
+      $('.btn-txt').toggle();
+    });
+  });
+  
+  //click event for the start button
+  $('.start-button').click(function() {
+    //initialize the game vars
+    Game = initializeGameVars(Game.uDiff);
+    Game.sysPattern = updateButtonSequence(Game.sequenceLength, [], Game.uDiff);
+    //update sequence counter for user display
+    score.text(Game.sequenceLength < 10? "0" + Game.sequenceLength : Game.sequenceLength);
+    //play the sequence
+    playSequenceTimer = sequencePlayer(Game.sysPattern, Game.sequenceSpeed, Game.sounds, createWaitTimer);
+  });
+  
+  //method (impure function) to test the users input against the systems
+  function testUserInput() {
+    //cancel the wait timer
+    clearTimeout(inputWaitTimer);
+    inputWaitTimer.stop();
+    
+    var res = sequenceChecker(Game.sysPattern, Game.usrPattern);
+    console.log(res, Game.sysPattern, Game.usrPattern);
+    
+    //if res == 0 then sequence match is complete, go to new sequenece
+    if (res === 0){
+      ready = false;
+      if (Game.sequenceLength === Game.winningCount) {
+        setTimeout(function() {
+          processWin();
+        }, 1000);
+      } else {
+        //get the new sequence length and system pattern
+        Game.sequenceLength = updateSequenceCounter(Game.sequenceLength, Game.uDiff);
+        Game.sysPattern = updateButtonSequence(Game.sequenceLength, Game.sysPattern, Game.uDiff);
+        //reset the user pattern
+        Game.usrPattern = [];
+        setTimeout(function() {
+          //update sequence counter for user display
+          score.text(Game.sequenceLength < 10? "0" + Game.sequenceLength : Game.sequenceLength);
+          //if difficulty is krazy then randomize sounds
+          if (Game.uDiff === 2)
+            Game.sounds = radomizeArray(Game.sounds);
+          //play the sequence
+          playSequenceTimer = sequencePlayer(Game.sysPattern, Game.sequenceSpeed, Game.sounds, createWaitTimer);
+        }, 1000);
+      }
+    }
+    //if res == 1 then user has yet to complete the sequence
+    //update user input timer
+    else if (res === 1){
+      createWaitTimer();
+    }
+    //otherwise the user has failed to match the sequence
+    //update with error feedback and take action based on the
+    //difficulty setting
+    else {      
+      processError();
+    }    
+  }
+  
+  //method called when processing error response to user
+  function processError() {
+    if (inputWaitTimer.isActive)
+      inputWaitTimer.stop();
+    //reset the user pattern
+    Game.usrPattern = [];
+    ready = false;
+    setTimeout(function() {
+      //update sequence counter and show error for user display
+      score.text("!!");
+      playSounds(Game.winLoseSounds[0]);
+    }, 600);
+  }
+  
+  //method called when processing a win response to user
+  function processWin() {
+    //set diplay to smiley
+    score.text(":)");
+    ready = false;
+    //show animation
+    var seq = [0,1,3,2,0,1,3,2,0,1,3,2,0,1,3,2];
+    playSounds(Game.winLoseSounds[1]);
+    sequencePlayer(seq, 
+                   200, 
+                   seq, 
+                   null);
+  }
+  
+  /**********************Run Script***********************/
+  //set the default diffculty setting
+  $('.instr-body').hide();
+  //show animation
+  var seq = [0,1,3,2,0,1,3,2];
+  sequencePlayer(seq, 
+                 100, 
+                 seq, 
+                 null);
+  $('.diff-button').click();
+});

@@ -1,0 +1,326 @@
+/* Page styles */
+html {
+  background: -webkit-linear-gradient(90deg, #dee1e1 10%, #f4f4f4 90%); /* Chrome 10+, Saf5.1+ */ 
+  background: -moz-linear-gradient(90deg, #dee1e1 10%, #f4f4f4 90%); /* FF3.6+ */background: linear-gradient(90deg, #dee1e1 10%, #f4f4f4 90%); /* W3C */
+  height: 100vh;
+  position: relative;
+}
+h1, h2, h3, h4, h5, p {
+  margin: 0;
+}
+body {
+  font-family: Tahoma;
+  font-size: 20px;
+  margin: 0; /* bottom = footer height */
+}
+footer {
+  bottom: 2px;  
+  height: 40px;  
+  margin-top: 40px;  
+  text-align: center;  
+  vertical-align: middle; 
+  position: relative;
+  width:100%;
+}
+.container {
+  text-align: center;
+}
+/* END Page styles */
+
+/* Buttons */
+button {
+  background: white;
+  cursor: pointer;
+  margin: .5em;
+  padding: 1em;
+}
+.playerX {
+  margin-right: 1em;
+}
+.playerO {
+  margin-left: 1em;
+}
+.js-reset {
+  margin: 1em auto;
+}
+button:hover, .tile:hover  {
+  background: #D7D6D7;
+  cursor: pointer;
+  -webkit-transition: .3s ease;
+          transition: .3s ease;
+}
+/* END Buttons */
+
+/* Gameboard */
+.js-gameboard {
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.45);
+  height: 14.65em;
+  margin: 0 auto;
+  width: 15.1em;
+}
+.tile {
+    width: 5em;
+    height: 5em;
+    border: 1px solid black;
+    background-color: white;
+    display: inline-block;
+    margin: -1px;
+    margin-bottom: -5px
+}
+.checked:after {
+  content: attr(data-check);
+  font-size: 3em;
+  line-height: 1.5em;
+  padding: .4em;
+} 
+.active-tile {
+  pointer-events: auto;
+}
+.inactive-tile {
+  pointer-events: none;
+}
+
+.ai {
+  color: firebrick;
+}
+
+/* Player Start UI */
+.player-start {
+  margin: .5em auto;
+  width: 75%;
+  padding: .5em;
+}
+#opponent-select-container {
+  display: none;
+}
+/* END Player Start UI */<main>
+  
+  <div class="container">
+    <h1>Tic Tac Toe</h1>
+    <p>Choose your marker and opponent to begin</p>
+    <!-- THIS SHOULD BE ANIMATED -->
+    <div class="player-start">
+      <div id="player-select-container">
+         <h3>Choose marker</h3>
+         <button class="js-player-select playerX" id="player-X" value="X">X</button> 
+         
+         <button class="js-player-select playerO" id="player-O" value="O">O</button>
+      </div>
+      <div id="opponent-select-container" class="js-hidden">
+        <h3>Choose opponent</h3>
+        <button class="opponent AI" value="AI">COMPUTER</button> 
+        <button class="opponent HUMAN" value="HUMAN">HUMAN</button>
+      </div>
+      <button class="js-reset" id="reset">RESET</button> 
+    </div>
+    <!-- END animated div -->
+    <div class="js-gameboard" id="gameboard"></div>
+
+  </div>
+</main>
+<footer>
+  <h2>Built by Jack</h2>
+</footer>
+<script src="js/index.js"></script><!-- </html> -->/* TO DO
+=> Learn the minimax algorithm
+=> refactor
+*/
+// Set global player letiables
+let opponent,
+    currentPlayer;
+/* Set winning tiles */
+const winners = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [6, 4, 2]
+];
+const opponentButtonDiv = document.getElementById("opponent-select-container"),
+        opponentButtons = document.querySelectorAll(".opponent"),
+        playerButtonDiv = document.getElementById("player-select-container"),
+          playerButtons = document.querySelectorAll(".js-player-select"),
+              gameboard = document.querySelector("#gameboard");
+
+document.getElementById("reset").addEventListener("click", reset);
+/* Initialise app */
+initialize();
+
+
+/* * * * * 
+ * Logic *
+ * * * * */
+
+function initialize() {
+  /* Create the gameboard and tiles */
+  const tiles = Array(9).fill();
+  let turnCounter = 1,
+    Ocoords = [],
+    Xcoords = [];
+  
+  
+  // Initialise button styles
+  playerButtonDiv.setAttribute("style", "display: inline-block, opacity: 1;");
+  /* 
+   * Setup classes and append to div forEach tile
+   */
+  function markTiles(  that, player, opponent, array, index ) {
+    that.dataset.check = player;
+    that.classList.remove("active-tile");
+    that.classList.add("inactive-tile");
+    currentPlayer = opponent;
+    array.push(index);
+    // Check which tile was clicked to compae with winning tiles 
+    console.log(`currentPlayer: ${array}`);
+  }
+
+
+  tiles.forEach((tile, i, arr) => {
+    
+    tile = document.createElement("div")
+    tile.setAttribute("class", "tile checked active-tile");
+    gameboard.appendChild(tile);
+    
+    
+    // Add X's and O's
+    tile.addEventListener("click", function(e) {
+      // Increment turnCounter to see what round we are up to    
+      turnCounter++;
+      
+      
+      if (opponent === "HUMAN") {
+        (currentPlayer === "X") 
+          ? markTiles(tile, "X", "O", Xcoords, i)
+          : markTiles(tile, "O", "X", Ocoords, i);
+      } // END human V human if statement
+      
+      
+      /* Begin Human V Computer Battle */
+      if (opponent === "AI" && currentPlayer === "X") {
+          
+        markTiles(tile, "X", "O", Xcoords, i);
+
+        let      aiTile = document.querySelectorAll(".ai"),
+            activeTiles = document.querySelectorAll(".active-tile"),
+
+            // random tile index is not registering in my comparison array
+
+            randomTileIndex = Math.floor(Math.random() * activeTiles.length),
+            randomTile = activeTiles[randomTileIndex];
+            randomTile.classList.add("ai");
+
+
+        markTiles(randomTile, "O", "X", Ocoords, randomTileIndex);
+        // markRandomTiles( randomTile, "O", Ocoords, randomTileIndex );
+      } else {
+        
+        markTiles(this, "O", "X", Xcoords, i);
+        markRandomTiles(randomTile, "X", Xcoords);
+        currentPlayer = "O";
+        
+      } // close AI functionality
+      
+      
+      /* 
+       * Find a winning match
+       */
+      winners.forEach((winner) => {
+        // Check winner array against player array
+        function filterWinner(winner, player) {
+          return winner.every((el) => {
+            return player.indexOf(el) !== -1;
+          });
+        }
+        
+
+        // Alert the correct winner
+        function alertWinner(player) {
+          swal({
+            title: `PLAYER ${player} WINS`,
+            type: 'success',
+          });
+          reset();
+        }
+        
+
+        // If a match is found alert and restart
+        if ( filterWinner( winner, Ocoords ) ) {
+          alertWinner("O");
+        } else if ( filterWinner( winner, Xcoords ) ) {
+          alertWinner("X");
+        }
+
+      }); // close winners forEach loop
+      
+     
+      // TIE game & restart when all boxes are full
+      turnCounter >= 10 && reset();
+      
+      
+    }); // Close tile event listeners 
+  }); // Close tiles forEach function
+} // Close initialize function
+
+
+/* 
+ * Fade out buttons
+ */
+function fadeOut(element) {
+  let opacity = 1,
+    speed = 18;
+  // decrease opacity over time
+  function decrease() {
+    opacity -= 0.05;
+    if (opacity <= 0) {
+      //reveal opponent button
+      opponentButtonDiv.setAttribute("style", "display: block; opacity: 1;");
+      // complete fadOut for both buttons
+      element.style.display = "none";
+      return true;
+    }
+    
+    element.style.opacity = opacity;
+    setTimeout(decrease, speed);
+    
+  }
+  
+  decrease();
+} // end fadeout
+
+
+/* * * * * * * * * * 
+ * Player buttons  *
+ * * * * * * * * * */
+function player_and_opponent(el, selection, container) {
+  return el.forEach((item) => {
+    item.addEventListener("click", function() {
+      // set global letiables (yes, i know this is sketchy :\ )
+      window[selection] = item.value;
+      fadeOut(container);
+    });
+  });
+}
+
+
+// Set player buttons and set currentPlayer, then fadeout
+player_and_opponent(playerButtons, "currentPlayer", playerButtonDiv);
+player_and_opponent(opponentButtons, "opponent", opponentButtonDiv);
+
+
+
+/* Reset the game by removing & replacing tiles */
+function reset() {
+  initialize();
+  remove_tiles('tile');
+  
+  // Remove excess tiles to ensure 9 will always show
+  function remove_tiles(className) {
+    let elements = document.getElementsByClassName(className);
+    while (elements.length > 9) {
+      elements[0].parentNode.removeChild(elements[0]);
+    }
+  } // end remove tile function
+} // Close reset function

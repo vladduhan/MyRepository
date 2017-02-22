@@ -1,0 +1,73 @@
+<div class="container-fluid">
+  <h1 class="text-center">Random Famous Quote</h1>
+  <div class="quote-container">
+    <blockquote>
+      <p class="quote"></p>
+      <footer class="author"></footer>
+    </blockquote>
+  </div>
+  <div class="text-center">
+    <button id='freshQuote' class="btn btn-lg btn-primary">New Quote</button>
+    <a class="twitter-share-button" href="http://codepen.io/kitschlich/pen/NqzraW/" title="">
+      <button id="tweet" class="btn btn-lg btn-info">Tweet Quote</button>
+    </a>
+  </div>
+</div>
+@import url(http://fonts.googleapis.com/css?family=Raleway);
+body {
+  font-family: 'Raleway', sans-serif;
+}
+
+.container-fluid {
+  max-width: 40em;
+  margin: 0 auto;
+}
+
+h1 {
+  margin: 1em 0;
+}
+
+.quote-container {
+  margin: 1em auto;
+}
+
+.author {
+  font-style: italic;
+}
+
+button {
+  margin: 1em .5em;
+}$(document).ready(function() {
+
+  var getQuote = function() {
+
+    $.ajax({
+      url: "https://andruxnet-random-famous-quotes.p.mashape.com/cat=famous?callback?",
+      headers: {
+        'X-Mashape-Key': 'RkT0c2Il2EmshW2jiCY696j84a4Ap1r9kOcjsn4gG1xlIjyQI8'
+      },
+      success: function(data) {
+        var quoteObj = JSON.parse(data);
+        var quote = quoteObj.quote;
+        var author = quoteObj.author;
+        $('.quote').html(quote);
+        $('.author').html(author);
+        $('.twitter-share-button').attr('title', quote + ' -' + author);
+      }
+    });
+  };
+
+  getQuote();
+
+  $('#freshQuote').on('click', getQuote);
+
+  $('.twitter-share-button').click(function(e) {
+    e.preventDefault();
+
+    var loc = $(this).attr('href');
+    var title = encodeURIComponent($(this).attr('title'));
+
+    window.open('http://twitter.com/share?url=' + loc + '&text=' + title + '&', 'twitterwindow', 'height=450, width=550, top=' + ($(window).height() / 2 - 225) + ', left=' + $(window).width() / 2 + ', toolbar=0, location=0, menubar=0, directories=0, scrollbars=0');
+  });
+
+});

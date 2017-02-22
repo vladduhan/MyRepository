@@ -1,0 +1,112 @@
+body{
+  background-image:url("http://www.walldevil.com/wallpapers/a57/arrow-antique-texture-clock-wallpaper-desktop-image-vintage.jpg");
+  background-size: 100%;
+  background-attachment: fixed;
+  color: white;
+  font-family: "Montserrat";
+  }
+h2{
+  display:inline;
+  }
+#start{
+  margin:10px;
+}
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+<audio id="buzzer" src="http://codingtutorials360.com/14244764.mp3" type="audio/mpeg"></audio>
+<div class="text-center">
+<h1>Build a Pomodoro Clock</h1>
+  <h3>Free Code Camp Advanced Front End Projects</h3>
+  <div id="timeDiv">
+    <h1 id="title1">Sesion Time</h1>
+    <a href="#" class="btn btn-primary" id="minus5Clock">-</a>
+    <h2 id="timeType"></h2>
+    <h2 id="num">5</h2>
+    <a href="#" class="btn btn-primary" id="add5Clock">+</a>
+    <a href="#" class="btn btn-primary" id="reset">Reset</a>
+  </div>
+  <div id="breakDiv">
+    <h1 id="title1">Break Time</h1>
+    <a href="#" class="btn btn-primary" id="minus5Break">-</a>
+    <h2 id="breakNum">5</h2>
+    <a href="#" class="btn btn-primary" id="add5Break">+</a>
+  </div>
+  <a href="#" class="btn btn-primary" id="start">Start</a>
+</div>$(document).ready(function(){
+  var buzzer = $("#buzzer")[0];
+  var count = parseInt($("#num").html());
+  var breakTime = parseInt($("#breakNum").html());
+  
+  $("#reset").hide();
+  $("#start").click(function(){
+    var counter = setInterval(timer, 1000);
+    count*=60;
+    function timer(){
+      
+      $("#start, #minus5Clock, #add5Clock, #minus5Break, #add5Break, #breakNum, #title1, #title2").hide();
+      $("#timeType").show();
+      $("#timeType").html("Session Time:");  
+      count-=1;
+      if(count===0){
+        buzzer.play();
+        clearInterval(counter);
+        var startBreak= setInterval(breakTimer,1000);
+        $("#num").hide();
+      }
+      if(count%60>=10){
+         $("#num").html(Math.floor(count/60)+":"+count%60);
+         }else{
+         $("#num").html(Math.floor(count/60)+":"+"0"+count%60)
+         }
+       
+     
+      function breakTimer(){
+      $("#timeType").html("Break Time:");
+      $("#breakNum").show();
+        breakTime*=60;
+        $("#timeType").show();
+      breakTime -=1;
+      if(breakTime===0){
+        clearInterval(startBreak);
+        buzzer.play();
+        $("#reset").show();
+        $("#breakNum, #timeType").hide();
+    }
+         if(breakTime%60>=10){
+         $("#breakNum").html(Math.floor(breakTime/60)+":"+breakTime%60);
+         }else{
+         $("#breakNum").html(Math.floor(breakTime/60)+":"+"0"+breakTime%60)
+         }
+    }
+    }
+  });
+  
+ $("#reset").click(function() {
+  count=25;
+  breakTime=25;
+  $("#num").html(count);
+  $("#breakNum").html(breakTime);
+  $("#start, #minus5Clock, #add5Clock, #minus5Break, #add5Break, #breakNum, #num, #title1, #title2").show();
+  $("#reset, #timeType").hide();
+  });
+  
+   $("#minus5Clock").click(function(){   
+   if (count > 5) {
+    count -=5;
+    $("#num").html(count);
+     }
+     });
+  $("#add5Clock").click(function(){
+        count +=5;
+    $("#num").html(count);
+    });
+  $("#minus5Break").click(function(){ 
+   if (breakTime > 5) {
+    breakTime -=5;
+    $("#breakNum").html(breakTime);
+  }
+   });
+  $("#add5Break").click(function(){
+       breakTime +=5;
+    $("#breakNum").html(breakTime);
+    });
+});

@@ -1,0 +1,164 @@
+$white: #ffffff;
+$primary: #00b7c6;
+$black: #2d2d2d;
+$screen: lighten(orange,10%);//#ddd;
+$button: lighten($black,20%);//#bbb;
+$bg: #888;
+$red: lighten(red, 10%);
+
+html, body{
+  background:   url('https://images.unsplash.com/photo-1424460421773-58b49adfc68a?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&w=1080&fit=max&s=269adb5293f65ef3971994b11f06cc03') no-repeat  center  fixed;
+  background-size: cover;
+  font-family: 'Lato', sans-serif;
+  color: $black;
+}
+h1{
+  color:$white;
+}
+h2{
+  color:$white;
+}
+#calcOutput{
+  background: $screen;
+  width: 200px;
+  height:75px;
+  border-top-left-radius:2em;
+  border-top-right-radius:2em;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top:20px;
+  padding-top:20px;
+  padding: 1em 2em 1em;
+  text-align: right;
+  font-family: monospace;
+  overflow: hidden;
+  position: relative;
+  font-size: 1.2em;
+  border: .1em solid lighten($bg, 20%);
+  border-top-color: darken($bg, 20%);
+  border-right-color: darken($bg, 20%);
+  box-shadow:
+     inset rgba($white,.6) 0 .05em 0 0,
+     inset darken($bg,30%) 0 .15em 0 0,
+     inset rgba($black,.3) -.2em .35em 0 0;
+  }
+#calculator{
+  background-color: grey;
+  width: 200px;
+  padding-top:20px;
+  padding-bottom:30px;
+  border-bottom-left-radius:2em;
+  border-bottom-right-radius:2em;
+  margin-right:auto;
+  margin-left:auto;
+  
+}
+#steps{
+  padding-left:50px;
+  font-size:2em;
+}
+.bigButton{
+  width:85px;
+}
+a{
+  margin: 4px;
+  width: 2.6vw;
+  height:2.6vw;border: .1em solid lighten($bg, 20%);
+  border-top-color: darken($bg, 20%);
+  border-right-color: darken($bg, 20%);
+  box-shadow:
+     inset rgba($white,.6) 0 .05em 0 0,
+     inset darken($bg,30%) 0 .15em 0 0,
+     inset rgba($black,.3) -.2em .35em 0 0;
+  }<link href='http://fonts.googleapis.com/css?family=Lato:900,400' rel='stylesheet' type='text/css'>
+<div class="text-center">
+  <h1>jQuery Calculator Free Code Camp</h1>
+  <h2>By: Vlad Duhan</h2>
+</div>
+<div id="calcOutput">
+  <span id="steps">0</span>
+  <hr/>
+</div>
+<div class="text-center" id="calculator">
+  <a class="btn btn-danger" id="deleteAll">AC</a>
+  <a class="btn btn-danger" id="backOne">CE</a>
+  <a class="btn btn-primary" id="/">/</a>
+  <a class="btn btn-primary" id="*">*</a>
+  <br/>
+  <a class="btn btn-primary" id="7">7</a>
+  <a class="btn btn-primary" id="8">8</a>
+  <a class="btn btn-primary" id="9">9</a>
+  <a class="btn btn-primary" id="-">-</a>
+  <br/>
+  <a class="btn btn-primary" id="4">4</a>
+  <a class="btn btn-primary" id="5">5</a>
+  <a class="btn btn-primary" id="6">6</a>
+  <a class="btn btn-primary" id="+">+</a>
+  <br/>
+  <a class="btn btn-primary" id="1">1</a>
+  <a class="btn btn-primary" id="2">2</a>
+  <a class="btn btn-primary" id="3">3</a>
+  <a class="btn btn-primary" id=".">.</a>
+  <br/>
+  <a class="btn btn-primary bigButton" id="0">0</a>
+  <a class="btn btn-primary bigButton" id="total">=</a>
+   
+
+</div>$(document).ready(function(){
+  //stores the inputs form the user to calculate later
+  var inputs = [""];
+  //string to store current input string
+  var totalString;
+  //operators array for validation without the .
+  var operators1 = ["+", "-", "/", "*"];
+  //operators array with the . for validation
+  var operators2 = ["."];
+  //numbers for validation
+  var nums = [0,1,2,3,4,5,6,7,8,9];
+  
+  function getValue(input){
+    if(operators2.includes(inputs[inputs.length-1]===true && input===".")){
+  }
+    else if(inputs.length===1 && operators2.includes(input)===false){
+      inputs.push(input);
+    }
+    else if(operators1.includes(inputs[inputs.length-1])===false){
+      inputs.push(input);
+    }
+    else if(nums.includes(Number(input))){
+      inputs.push(input);
+    }
+    update();
+  }
+  function update(){
+    totalString = inputs.join("");
+    $("#steps").html(totalString);
+  }
+  function getTotal(){
+    totalString = inputs.join("");
+    $("#steps").html(eval(totalString));
+  }
+  $("a").on("click",function(){
+    if(this.id==="deleteAll"){
+      inputs=[""];
+      update();
+   }
+    else if(this.id==="backOne"){
+      inputs.pop();
+      update();
+    }
+    else if(this.id==="total"){
+      getTotal();
+    }
+    else{
+      if(inputs[inputs.length-1].indexOf("+", "-", "*", "/",".")===-1){
+      getValue(this.id);
+    }
+    else{
+      getValue(this.id);
+    }
+   }
+         
+  });
+  
+});

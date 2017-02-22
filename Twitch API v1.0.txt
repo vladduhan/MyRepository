@@ -1,0 +1,330 @@
+<div class="container-fluid container_main">
+  
+    <div class="list-group">
+      <nav class="list-group-item">
+    <ul>
+      <li class="nav_items item0"><img src="https://s12.postimg.org/b2ue250nx/Twitch_logo.png" ></li>
+      <div class="input_n_btn">
+        <li class="nav_items item01">
+        <a class="search_btn"><i class="fa fa-search"></i></a>
+        <input autocomplete="off" id="search_box" type='search' class="form-control" placeholder="Search"></input>
+        <a class="del_btn"><i class="fa fa-times"></i></a>
+        </li>
+      <div class='item'>
+      <li class="nav_items item1"><a class="btn btn-primary">All</a></li>
+      <li class="nav_items item2"><a class="btn btn-default">Online</a></li>
+      <li class="nav_items item3"><a class="btn btn-default">Offline</a></li>
+      </div> <!-- end item -->
+      </div> <!-- end input_n_btn -->
+    </ul>
+   </nav>
+    <div class="list-group-content">
+   </div>
+</div> <!-- end container -->
+* {
+  box-sizing: border-box;
+}
+
+body{
+  background-color:rgba(100, 65, 165, 0.1);
+  min-height: 100vh;
+  background-image: url('https://s16.postimg.org/60432a92t/Twitch_970_80.jpg');
+}
+
+.container_main {
+  display: flex;
+  justify-content: center;  
+  margin-top: 5%;
+  margin-bottom:2%;
+}
+nav {
+  display: flex;
+  align-items: center;
+  
+}
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+}
+.search_btn {
+  display:none;
+  color: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  margin-top: 6px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.del_btn {
+  display:none;
+  margin-left: -20px;
+  color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+}
+.del_btn:hover {
+  color: #D9534f;
+}
+.form-control {
+  padding-right: 20px;
+}
+.item0{
+  margin: 13px 0;
+  margin-left: 5px;
+  flex: 1;
+  margin-right: 10px;
+}
+.item0 img:hover {
+  cursor: pointer;
+}
+.item01 {
+  display:flex;
+  align-items: center;
+  margin:10px;
+}
+
+.nav_items {
+  align-self: center;
+}
+.list-group {
+  width: 75%;
+  box-shadow: 8px 8px 8px rgba(0, 0, 0, .5);
+}
+.list-group-content {
+  display: flex;
+  flex-direction: column;
+}
+.list-group-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.item {
+  display: flex;
+}
+.item1, .item2, .item3 {
+  margin: 10px;
+}
+
+.avatar {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}
+.description {
+  margin: 0 0 0 20px;
+}
+.description h4 {
+  font-weight: bold;
+  margin-bottom:3px;
+}
+.description p {
+  font-style: italic;
+  margin-top:3px;
+}
+.av_des {
+  display: flex;
+  align-items: center;
+}
+.state {
+  display: flex;
+  justify-content: flex-end;
+  width: 100vh;
+  margin-right: 10px;
+  flex:1;
+}
+
+.input_n_btn {
+  display:flex;
+}
+@media (max-width: 1000px) {
+  .list-group {
+    width: 90%;
+  }
+  }
+@media(max-width: 610px){
+  .item {
+    justify-content: center;
+  }
+  .item1, .item2, .item3 {
+    margin:0 7px;
+  }
+  .input_n_btn {
+  flex-direction: column;
+}
+}
+
+@media (max-width: 510px) {
+  ul {
+    flex-direction: column;
+}
+  .state {
+    display: none;
+  }
+}function main() {
+
+  var channel = [
+    {
+      name: 'freecodecamp',
+      logo: {
+        src: "https://static-cdn.jtvnw.net/jtv_user_pictures/freecodecamp-profile_image-d9514f2df0962329-300x300.png"
+      }
+    }, {
+      name: 'esl_sc2',
+      logo: {
+        src: "https://static-cdn.jtvnw.net/jtv_user_pictures/esl_sc2-profile_image-d6db9488cec97125-300x300.jpeg"
+      }
+    }, {
+      name: 'OgamingSC2',
+      logo: {
+        src: "https://static-cdn.jtvnw.net/jtv_user_pictures/ogamingsc2-profile_image-9021dccf9399929e-300x300.jpeg"
+      }
+    }, {
+      name: 'cretetion',
+      logo: {
+        src: "https://static-cdn.jtvnw.net/jtv_user_pictures/cretetion-profile_image-12bae34d9765f222-300x300.jpeg"
+      }
+    }, {
+      name: 'storbeck',
+      logo: {
+        src: "https://static-cdn.jtvnw.net/jtv_user_pictures/storbeck-profile_image-7ab13c2f781b601d-300x300.jpeg"
+      }
+    }, {
+      name: 'habathcx',
+      logo: {
+        src: "https://static-cdn.jtvnw.net/jtv_user_pictures/habathcx-profile_image-d75385dbe4f42a66-300x300.jpeg"
+      }
+    }, {
+      name: 'RobotCaleb',
+      logo: {
+        src: "https://static-cdn.jtvnw.net/jtv_user_pictures/robotcaleb-profile_image-9422645f2f0f093c-300x300.png"
+      }
+    }, {
+      name: 'noobs2ninjas',
+      logo: {
+        src: "https://static-cdn.jtvnw.net/jtv_user_pictures/noobs2ninjas-profile_image-34707f847a73d934-300x300.png"
+      } 
+    }, {
+      name: 'comster404',
+      logo: {
+        src: "http://socmedawards.com/templates/inis_default/images/avatar.png"
+      } 
+    }, {
+      name: 'brunofin',
+      logo: {
+        src: "http://socmedawards.com/templates/inis_default/images/avatar.png"
+      }
+    }];
+  
+ $('.list-group-content').hide();
+
+  function get_json(channel, i) {
+    var url = 'https://api.twitch.tv/kraken/streams/' + channel[i].name;
+
+    // call to ajax
+    $.ajax({
+      type: 'GET',
+      dataType: "json",
+      url: url,
+      headers: {
+        'Client-ID': 't0bygtv4nwlrifc9sigricr063nnt1x'
+      },
+      success: function(data) {
+        updating_tabs(channel, i, data);
+      },
+      error: function(data) {
+        
+        $('.list-group-content').append('<a target="_blank" class="list-group-item" id="_' + i + '"><div class="av_des"><img class="avatar" src="' + channel[i].logo.src + '"><div class="description"><h4>' + channel[i].name + '</h4><p>Account not available</p></div></div><div class="state" id="state'+i+'" ><h1 style="color:#d9534f; font-weight:bold">Offline</h1></div></a>');
+      }
+    });
+  }
+
+  function updating_tabs(channel, i, data) {
+    function online(channel, i, data) {
+      var game;
+      if(data.stream.game===null) {
+        game='No description available';
+        }
+      else {
+        game=data.stream.game;
+      }
+      $('.list-group-content').append('<a href="https://www.twitch.tv/' + channel[i].name + '" target="_blank" class="list-group-item" id="_' + i + '"><div class="av_des"><img class="avatar" src="' + channel[i].logo.src + '"><div class="description"><h4>' + channel[i].name + '</h4><p>' +game + '</p></div></div><div class="state" id="state'+i+'" ><h1 style="color:#5cb85c; font-weight:bold">Online</h1></div></a>');
+    }
+
+    function offline(channel, i, data) {
+      $('.list-group-content').append('<a href="https://www.twitch.tv/' + channel[i].name + '" target="_blank" class="list-group-item" id="_' + i + '"><div class="av_des"><img class="avatar" src="' + channel[i].logo.src + '"><div class="description"><h4>' + channel[i].name + '</h4><p>Currently not streaming</p></div></div><div class="state" id="state'+i+'" ><h1 style="color:#d9534f; font-weight:bold">Offline</h1></div></a>');
+    }
+
+    function all(channel, i, data) {
+      if (data.stream === null) {
+        offline(channel, i, data);
+      } else {
+        online(channel, i, data);
+      }
+    }
+    
+    all(channel, i, data);
+  }
+
+  for (var i = 0; i < channel.length; i++) {
+    get_json(channel, i);
+  }
+  $('.item *').click(function() {
+    $('a', this).removeClass('btn-default');
+    $('a', this).addClass('btn-primary');
+    $(this).siblings().find('a').removeAttr('class');
+    $(this).siblings().find('a').addClass('btn btn-default');
+   
+    $('.list-group-content').hide();
+    
+    for(var i=0;i<channel.length; i++) {
+     $('#_'+i).hide();
+     if($('a',this).text()===$('#state'+i).text() || $('a',this).text()==='All'){
+     $('#_'+i).show();
+    } 
+    }
+    $('.list-group-content').slideDown('slow');
+
+  });
+  $('#search_box').keyup(function() {
+    if (!$(this).val()) {
+      $('.del_btn').hide();
+    } else {
+      $('.del_btn').show();
+    } //del button
+    var input = $(this).val();
+    for (var i = 0; i < channel.length; i++) {
+      var name = channel[i].name;
+      if (!name.toLowerCase().includes(input.toLowerCase())) {
+        $('#_' + i).hide();
+      } else {
+        $('#_' + i).show();
+      }
+    } // toogling search 
+  });
+
+  $('.del_btn').click(function() {
+    $('#search_box').val('');
+    $(this).hide();
+      for(var i=0; i<channel.length;i++) {
+      if($('.btn-primary').text()===$('#state'+i).text() || $('.btn-primary').text()==='All'){
+        $('#_'+i).show();
+      }
+    }
+    $('.list-group-content').hide();
+    $('.list-group-content').slideDown('slow');
+  });
+  
+  $('.item0 img').click(function(){
+    window.open('https://www.twitch.tv/');
+  });
+  
+  $('.list-group-content').slideDown('slow');
+  
+} // end main
+
+$(document).ready(main);
+
