@@ -1,0 +1,62 @@
+<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+<div class="container">
+  <div class="text-center">
+  <h1> Wikipedia API Search</h1>
+  <h4> Front End Development</h4>
+ <div class="heading"> <a href="http://en.wikipedia.org/wiki/Special:Random" target="blank">
+  <img src='http://lh5.ggpht.com/1Erjb8gyF0RCc9uhnlfUdbU603IgMm-G-Y3aJuFcfQpno0N4HQIVkTZERCTo65Iz2II=w300'>
+  </a></div></div><br/>
+  <input class="form-control" id="searchTerm"><div class="wrapper">
+  <button  id="search" type="button" class="btn btn-primary">Submit</button></div>
+  <ul id = "output">
+    
+  </ul>
+</div>
+  body{
+  font-family: 'Inconsolata';
+  background-image:url("http://wallpaper-gallery.net/images/image-background/image-background-10.jpg");
+ color: white;
+}
+.heading{
+  background-color: grey;
+  border-radius: 153px;
+  display: inline-block;
+}
+.wrapper {
+    text-align: center;
+}
+
+.button {
+    position: absolute;
+    top: 50%;
+    
+}
+$(document).ready(function(){
+  $("#search").on("click",function(){
+    var searchTerm = $("#searchTerm").val();
+    var url = "https://en.wikipedia.org/w/api.php?action=opensearch&search=" + searchTerm + "&format=json&callback=?";
+    $.ajax({
+      type:"GET",
+      url : url,
+      async : false,
+      dataType : "json",
+      success : function(data){
+        $('#output').html(' ');
+        for(var i = 0 ; i < data[1].length ; i++){
+        $("#output").prepend("<li><a href= "+data[3][i]+">"+data[1][i]+"</a><p>"+data[2][i]+"</p></li>");
+        };
+        $("#searchTerm").val("");
+      },
+      error:function(error){
+        alert("Error");
+      }
+      
+    });
+  });
+  
+  $("#searchTerm").keypress(function(e){
+    if(e.which==13){
+      $("#search").click();
+    }
+  })
+});
